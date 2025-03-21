@@ -1,15 +1,22 @@
 function verificarPrimo(numero){
+    let contador = 0;
     if(isNaN(numero)){
         return console.log("Entrada inválida");
     }
-    for(i=2;i<numero;i++){
+    for(i=1;i<=numero;i++){
         if(numero % i ==0){
-            console.log(numero +" não é primo");
-            return false;
+            contador++;
+            console.log(contador)
+            
         }
     }
-    console.log(numero +" é primo");
-    return true;
+    if(contador == 2){
+        console.log(numero +" é primo");
+        return true;
+    }else{
+        console.log(numero +" não é primo")
+        return false;
+    }
 }
 
 
