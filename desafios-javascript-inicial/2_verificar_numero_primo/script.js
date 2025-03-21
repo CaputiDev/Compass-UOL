@@ -6,7 +6,6 @@ function verificarPrimo(numero){
     for(i=1;i<=numero;i++){
         if(numero % i ==0){
             contador++;
-            console.log(contador)
             
         }
     }
@@ -24,5 +23,10 @@ function verificarPrimo(numero){
 function verificar() {
     let numero = parseInt(document.getElementById("numero").value);
     let resultado = verificarPrimo(numero);
-    document.getElementById("resultado").innerText = resultado;
+    if(isNaN(numero)){
+        document.getElementById("resultado").innerText = "Insira um valor, por favor";
+    }else{
+        resultado ? document.getElementById("resultado").innerText = `O ${numero} é primo!` : document.getElementById("resultado").innerText = `O ${numero} não é primo!`;
+        
+    }
 }
