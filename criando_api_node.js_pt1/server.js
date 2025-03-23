@@ -4,6 +4,9 @@ const { URL } = require('node:url');
 const host = '127.0.0.1';
 const port = 3200;
 
+//var globais
+let counter = 0;
+
 const server = createServer((request, response) => {
     response.statusCode= 200;
     response.setHeader('content-Type','application/json'); 
@@ -40,18 +43,44 @@ const server = createServer((request, response) => {
             response.statusCode = 200;
             response.end(JSON.stringify({isPrime:result}));
         };
-    }else if(request.method === 'POST'){
+    }else if(request.method === 'POST' && url.pathname === '/count'){
+        //curl -X POST http://127.0.0.1:3200/count -H "Content-Type: application/json" -d "{\"incrementBy\": 100}"
+        let body = '';
 
+        request.on('data', chunk =>{
+            body += chunk.toString();
+        });
+
+        request.on('end', () => {
+            try{
+
+                const parsedBody = JSON.parse(body);
+                const incrementBy = parsedBody.incrementBy;
+
+                if(isNaN(incrementBy) || !Number.isInteger(incrementBy) || incrementBy < 0 ){
+                    response.statusCode = 400;
+                    return response.end(JSON.stringify({ error: 'Invalid Input'}))
+                }else{
+                    counter += incrementBy;
+                    response.statusCode = 200;
+                    return response.end(JSON.stringify({ counter }));
+
+                }
+
+            }catch(error){
+                response.statusCode = 400;
+                return response.end(JSON.stringify({ error: 'Invalid JSON' }));
+            }
+        })
     }else{
     response.statusCode = 404;
     response.end(JSON.stringify({error:"Route Not Found"}));
     }
-
-}catch(error){
-    console.error(error);
-    response.statusCode = 500;
-    response.end(JSON.stringify({
-        error: 'Internal Server Error'
+    }catch(error){
+        console.error(error);
+        response.statusCode = 500;
+        response.end(JSON.stringify({
+            error: 'Internal Server Error'
     }));
 }
 });
