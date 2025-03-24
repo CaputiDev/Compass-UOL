@@ -1,4 +1,6 @@
+const { error } = require('node:console');
 const {createServer} = require('node:http');
+const { json } = require('node:stream/consumers');
 const { URL } = require('node:url');
 
 const host = '127.0.0.1';
@@ -46,17 +48,13 @@ const server = createServer((request, response) => {
     }else if(request.method === 'POST' && url.pathname === '/count'){
         //curl -X POST http://127.0.0.1:3200/count -H "Content-Type: application/json" -d "{\"incrementBy\": 100}"
         let body = '';
-
         request.on('data', chunk =>{
             body += chunk.toString();
         });
-
         request.on('end', () => {
             try{
-
                 const parsedBody = JSON.parse(body);
                 const incrementBy = parsedBody.incrementBy;
-
                 if(isNaN(incrementBy) || !Number.isInteger(incrementBy) || incrementBy < 0 ){
                     response.statusCode = 400;
                     return response.end(JSON.stringify({ error: 'Invalid Input'}))
@@ -64,14 +62,71 @@ const server = createServer((request, response) => {
                     counter += incrementBy;
                     response.statusCode = 200;
                     return response.end(JSON.stringify({ counter }));
-
                 }
-
             }catch(error){
                 response.statusCode = 400;
                 return response.end(JSON.stringify({ error: 'Invalid JSON' }));
             }
         })
+    }else if(request.method === 'GET' && url.pathname === '/stock-insight'){
+        response.statusCode = 200;
+        
+        let currency = url.searchParams.get('currency') || 'usd';
+        
+        const apiURL = `https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=${currency}`
+        
+        fetch(apiURL)
+        .then(response =>{
+            if(!response.ok){
+                throw new Error('Erro ao buscar o preço do Bitcoin')
+            }
+            return response.json();
+        })
+        .then(data => {
+            const price = data.bitcoin[currency];
+            
+            if(!price){
+                throw new Error('Dados inválidos da API');
+            }
+            const sugestao = priceValidation(price);
+            return response.end(JSON.stringify({
+                btc_price: price,
+                currency,
+                sugestao
+            }))
+            
+            
+        })
+        .catch(error => {
+            response.end(JSON.stringify({error: 'erro ao buscar dados'}));
+
+        });
+        function priceValidation(price){
+            let sugestao;
+            if(currency === 'brl'){
+                if(price <0){
+                throw new Error('Erro no valor do bitcoin');
+                }else if(price <300000){
+                    return 'Bom momento para compra!';
+                }else if(price >300000 && price <450000){
+                    return  'Preço razoável. Avalie antes de comprar.'
+                }else{
+                    return  'Bitcoin está caro. Pode ser melhor esperar.'
+                }
+            }else if(currency === 'usd'){
+                if(price <0){
+                    throw new Error('Erro no valor do bitcoin');
+                }else if(price <60000){
+                    return  'Bom momento para compra!';
+                }else if(price >60000 && price <80000){
+                    return 'Preço razoável. Avalie antes de comprar.'
+                }else{
+                    return 'Bitcoin está caro. Pode ser melhor esperar.'
+                }
+            }else{
+                return 'Erro, moeda inserida inválida'
+            }
+        }
     }else{
     response.statusCode = 404;
     response.end(JSON.stringify({error:"Route Not Found"}));
