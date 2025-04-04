@@ -11,6 +11,13 @@ const HouseSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:'User'
     }
+},{
+    toJSON:{
+        virtuals:true
+    }
 });
 
+HouseSchema.virtual('thumbnail_url').get(function(){
+    return `http://localhost:3010/files/${this.thumbnail}`;
+})
 module.exports = new model('House', HouseSchema)
