@@ -1,0 +1,13 @@
+{
+  "name": "criando_api_node.js_pt1",
+  "version": "1.0.0",
+  "description": "Neste desafio, você deve **criar uma API simples usando apenas o módulo `http`** do Node.js, sem utilizar frameworks como Express.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
