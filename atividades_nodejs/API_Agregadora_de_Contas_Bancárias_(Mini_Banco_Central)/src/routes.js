@@ -1,13 +1,8 @@
-const {Router} = require('express');
+import { Router } from 'express';
+import UserController from './controllers/UserController.js';
 
 const routes = Router();
 
-const multer = require('multer');
+routes.get('/usuarios/:id/contas', UserController.create);
 
-
-
-routes.get('/hello',(req,res) => {
-    res.send('API do Mini Banco Central funcionando!');
-});
-
-module.exports = routes;
+export default routes;
