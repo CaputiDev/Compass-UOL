@@ -4,30 +4,30 @@ import { DataTypes } from 'sequelize';
 import database from '../database/db.js';
 
 const User = database.define(
-    'usuarios',
-    {
+  'usuarios',
+  {
     id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true,
-    },
-    cpf: {
-        type: DataTypes.STRING(11),
-        unique: true,
-        allowNull: false,
-        validate: {
-        len: [11, 11],
-    },
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
     },
     nome: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
+      type: DataTypes.STRING(100),
+      allowNull: false,
     },
-},
-{
+    cpf: {
+      type: DataTypes.STRING(11),
+      allowNull: false,
+      unique: true,
+      validate: {
+        len: [11, 11], // exige exatamente 11 dígitos
+      },
+    },
+  },
+  {
     tableName: 'usuarios',
-    timestamps: false, // opcional, se tu não tiver colunas createdAt/updatedAt
-}
+    timestamps: false, // não tem createdAt / updatedAt
+  }
 );
 
 export default User;

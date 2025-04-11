@@ -1,0 +1,18 @@
+# Node
+node_modules/
+.env
+dist/
+logs/
+*.log
+
+# Sequelize
+*.sqlite
+*.sqlite3
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/

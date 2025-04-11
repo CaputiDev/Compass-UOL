@@ -1,0 +1,33 @@
+services:
+  api:
+    build: .
+    container_name: "Mini_Banco_Central"
+    ports:
+      - "3050:3050"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=seu_banco
+      - DB_USER=postgres
+      - DB_PASS=postgres
+    volumes:
+      - .:/app
+    restart: always
+
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: seu_banco
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:

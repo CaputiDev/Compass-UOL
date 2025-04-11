@@ -3,7 +3,7 @@ import User from '../models/User.js';
 class UserController {
     async create(req, res) {
     const { cpf, nome } = req.body;
-
+        
     try {
         const user = await User.create({ cpf, nome });
         return res.status(201).json(user);

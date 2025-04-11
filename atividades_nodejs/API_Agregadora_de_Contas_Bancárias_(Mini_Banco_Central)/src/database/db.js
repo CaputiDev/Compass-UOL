@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize';
 
-const sequelize = new Sequelize('mini_banco_central', 'root', '9256', {
+const sequelize = new Sequelize('mini_banco_central', 'postgres', '9256', {
   host: 'localhost',
   dialect: 'postgres',
 });

@@ -1,6 +1,7 @@
 {
-  "type":"module",
+  "type": "module",
   "dependencies": {
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "multer": "^1.4.5-lts.2",
     "nodemon": "^3.1.9",
@@ -10,13 +11,13 @@
   },
   "scripts": {
     "dev": "nodemon src/server/server.js",
-  "lint": "eslint . --ext .js"
-
+    "lint": "eslint . --config eslint.config.js"
   },
   "devDependencies": {
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
-    "globals": "^16.0.0"
+    "globals": "^16.0.0",
+    "sequelize-cli": "^6.6.2"
   }
 }
