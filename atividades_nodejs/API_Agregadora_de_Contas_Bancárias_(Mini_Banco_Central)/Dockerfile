@@ -12,4 +12,4 @@ COPY . .
 EXPOSE 3050
 
 # Comando para iniciar o servidor
-CMD ["npm","run","dev"]
+CMD ["npm", "run","init"]

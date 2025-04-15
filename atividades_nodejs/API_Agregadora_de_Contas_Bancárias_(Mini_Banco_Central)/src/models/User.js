@@ -1,4 +1,4 @@
-// src/models/User.js
+
 
 import { DataTypes } from 'sequelize';
 import database from '../database/db.js';
@@ -20,13 +20,13 @@ const User = database.define(
       allowNull: false,
       unique: true,
       validate: {
-        len: [11, 11], // exige exatamente 11 dígitos
+        len: [11, 11],
       },
     },
   },
   {
     tableName: 'usuarios',
-    timestamps: false, // não tem createdAt / updatedAt
+    timestamps: false, 
   }
 );
 
