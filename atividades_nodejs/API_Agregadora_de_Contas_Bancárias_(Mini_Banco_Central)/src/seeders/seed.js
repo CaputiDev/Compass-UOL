@@ -1,8 +1,19 @@
 import sequelize from '../database/db.js';
+
 import Usuario from '../models/User.js';
 import Institution from '../models/Institution.js';
 import Conta from '../models/Conta.js';
+import Transacao from '../models/Transacao.js';
+
 import { faker } from '@faker-js/faker';
+
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('America/Sao_Paulo');
 
 const seedUsers = async () => {
 try {
@@ -61,22 +72,22 @@ const seedContas = async () => {
         {
             usuario: usuarios[0],
             instituicao: instituicoes[0],
-            saldo: 5340.23,
+            saldo: 10000.00,
         },
         {
             usuario: usuarios[1],
             instituicao: instituicoes[1],
-            saldo: 3500.60,
+            saldo: 10000.00,
         },
         {
             usuario: usuarios[2],
             instituicao: instituicoes[2],
-            saldo: 7200.50,
+            saldo: 10000.00,
         },
         {
         usuario: usuarios[3],
         instituicao: instituicoes[3],
-        saldo: 1000.00,
+        saldo: 10000.00,
         },
     ].map(({ usuario, instituicao, saldo }) => ({
         usuario_id: usuario.id,
@@ -106,6 +117,78 @@ const seedContas = async () => {
     console.error('Erro ao popular banco de dados com contas:', err);
     }
 };
+const seedTransacoes = async () => {
+    try {
+    const contas = await Conta.findAll();
+
+    const transacoes = [];
+
+    for (let i = 0; i < 10; i++) {
+        const conta = contas[faker.number.int({ min: 0, max: contas.length - 1 })];
+
+        const tipo = faker.helpers.arrayElement(['deposito', 'saque']);
+        const valor = faker.number.float({ min: 10, max: 1000, precision: 0.01 });
+        const descricao = tipo === 'deposito'
+        ? faker.helpers.arrayElement([
+            'Depósito via app',
+            'Transferência recebida',
+            'Pix recebido',
+            'Depósito em dinheiro',
+            'Depósito via terminal bancário',
+            'Depósito realizado por transferência',
+            'Depósito por cheque compensado',
+            'Depósito de valor em caixa eletrônico',
+        ])
+        : faker.helpers.arrayElement([
+            'Saque em caixa eletrônico',
+            'Transferência enviada',
+            'Pix enviado',
+            'Pagamento de boleto',
+            'Saque em caixa eletrônico realizado',
+            'Saque em terminal de autoatendimento',
+            'Retirada de saldo em caixa eletrônico',
+            'Saque no caixa eletrônico disponível',
+            'Saque feito no terminal de autoatendimento',
+            'Retirada de dinheiro em caixa eletrônico',
+            'Saque em caixa eletrônico com cartão',
+            'Saque realizado com código QR',
+            'Saque via terminal bancário',
+            'Retirada em caixa eletrônico 24h',
+        ]);
+        
+        const data = dayjs
+.tz(
+    faker.date.between({ 
+    from: dayjs().subtract(12, 'months').toDate(), 
+    to: new Date() 
+    }), 
+    'America/Sao_Paulo'
+)
+.toDate(); 
+
+transacoes.push({
+conta_id: conta.id_conta,
+tipo,
+valor,
+descricao,
+createdAt: data,
+updatedAt: data,
+});
+        
+        if (tipo === 'deposito') {
+            conta.saldo = parseFloat(conta.saldo) + valor;
+        } else if (tipo === 'saque') {
+            conta.saldo = parseFloat(conta.saldo) - valor;
+        }
+            await conta.save();
+    }
+
+        await Transacao.bulkCreate(transacoes);
+    } catch (err) {
+        // eslint-disable-next-line
+        console.error('Erro ao popular banco de dados com transações:', err);
+    }
+};
 const seedDatabase = async () => {
 try {
     
@@ -115,6 +198,7 @@ try {
     await seedUsers();
     await seedInstituicoes();
     await seedContas();
+    await seedTransacoes();
 } catch (err) {
      // eslint-disable-next-line
     console.error('Erro ao sincronizar banco de dados:', err);

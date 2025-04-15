@@ -4,7 +4,7 @@ class InstitutionController{
   async create(req, res) {
   try {
     const { nome, cnpj } = req.body;
-
+    
     
     const InstitutionIsValid = await Institution.findOne({ where: { nome } });
     if (InstitutionIsValid) {

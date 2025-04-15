@@ -3,6 +3,15 @@ import database from '../database/db.js';
 import Usuario from '../models/User.js';
 import Instituicao from '../models/Institution.js';
 
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
+import timezone from 'dayjs/plugin/timezone.js';
+
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault('America/Sao_Paulo');
+
 const Conta = database.define('contas', {
   id_conta: {
     type: DataTypes.INTEGER,
@@ -35,7 +44,7 @@ const Conta = database.define('contas', {
   },
 }, {
   tableName: 'contas',
-  timestamps: false,
+  timestamps: true,
 });
 
 Conta.belongsTo(Usuario, {
