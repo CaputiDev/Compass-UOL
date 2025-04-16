@@ -1,5 +1,3 @@
-
-
 import { DataTypes } from 'sequelize';
 import database from '../database/db.js';
 
@@ -29,5 +27,7 @@ const User = database.define(
     timestamps: false, 
   }
 );
+
+
 
 export default User;

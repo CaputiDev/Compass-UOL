@@ -1,7 +1,5 @@
 import { DataTypes } from 'sequelize';
 import database from '../database/db.js';
-import Usuario from '../models/User.js';
-import Instituicao from '../models/Institution.js';
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc.js';
@@ -45,16 +43,6 @@ const Conta = database.define('contas', {
 }, {
   tableName: 'contas',
   timestamps: true,
-});
-
-Conta.belongsTo(Usuario, {
-  foreignKey: 'usuario_id',
-  as: 'usuario',
-});
-
-Conta.belongsTo(Instituicao, {
-  foreignKey: 'instituicao_id',
-  as: 'instituicao',
 });
 
 export default Conta;

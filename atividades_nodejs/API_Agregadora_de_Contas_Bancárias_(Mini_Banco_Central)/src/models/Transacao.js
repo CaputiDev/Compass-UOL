@@ -44,4 +44,6 @@ const Transacao = database.define('transacoes', {
   timestamps: true,
 });
 
+
+
 export default Transacao;

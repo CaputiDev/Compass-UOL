@@ -1,12 +1,13 @@
 import Conta from '../models/Conta.js';
-
+import Usuario from '../models/User.js';
+import Instituicao from '../models/Institution.js';
 class ContaController{
     async create(req,res){
         try{
             const {usuario_id, instituicao_id} = req.body;
 
-            const usuario = await usuario.findByPK(usuario_id);
-            const instituicao = await instituicao.findByPK(instituicao_id);
+            const usuario = await Usuario.findByPk(usuario_id);
+            const instituicao = await Instituicao.findByPk(instituicao_id);
 
             if (!usuario || !instituicao) {
                 return res.status(404).json({ error: 'Usuário ou instituição não encontrados' });
@@ -31,7 +32,10 @@ class ContaController{
                 cpf_usuario: usuario.cpf,
                 nome_instituicao: instituicao.nome
             });
-            return res.status(201).json(novaConta);
+            const mensagem = `Conta de '${usuario.nome}' criada na instituição '${instituicao.nome}'`;
+            return res.status(201).json({
+                "message": mensagem,
+                "new_account":novaConta});
         }catch(error){
             return res.status(400).json({error: 'Erro ao criar Conta', details: error.message});
         }

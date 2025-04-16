@@ -9,5 +9,5 @@ app.listen(port, () => {
     // eslint-disable-next-line
     console.log(`Server running at http://localhost:${port}/`);
     // eslint-disable-next-line
-    console.log(`pgAdmin running at http://localhost:${pgport}`)
+    console.log(`pgAdmin running at http://localhost:${pgport}/`)
 });

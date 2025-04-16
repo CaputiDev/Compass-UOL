@@ -16,9 +16,9 @@
   "scripts": {
     "init": "nodemon src/server/server.js",
     "dev": "docker compose up --build",
-    "down": "docker compose down",
+    "down": "docker compose down -v",
     "lint": "eslint . --config eslint.config.js",
-    "sequelize": "sequelize --config ./src/config/config.js"
+    "seed": "node src/seeders/seed.js"
   },
   "devDependencies": {
     "eslint": "^9.24.0",
