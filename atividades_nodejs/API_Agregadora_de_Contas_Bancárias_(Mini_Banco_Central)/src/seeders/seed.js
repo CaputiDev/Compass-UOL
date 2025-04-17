@@ -116,55 +116,82 @@ const seedTransacoes = async () => {
     try {
         const contas = await Conta.findAll();
         
-        const transacoes = [];
-        
         if (contas.length === 0) {
-             // eslint-disable-next-line
-            console.warn('Nenhuma conta encontrada. Transações não serão criadas.');
+            // eslint-disable-next-line
+            console.warn("Nenhuma conta encontrada.");
             return;
         }
+
+        
+        const transacoesPadrao = [
+            {
+                conta_id: contas[0].id_conta, 
+                tipo: "transferencia",
+                valor: 100.00,
+                descricao: "Pix",
+                conta_destino_id: contas[1].id_conta, 
+            },
+            {
+                conta_id: contas[0].id_conta,
+                tipo: "transferencia",
+                valor: 1000.00,
+                descricao: "Doação",
+                conta_destino_id: contas[1].id_conta,
+            },
+            {
+                conta_id: contas[3].id_conta,
+                tipo: "saque",
+                valor: 100.00,
+                descricao: "Saque",
+                conta_destino_id: null, 
+            },
+            {
+                conta_id: contas[2].id_conta,
+                tipo: "transferencia",
+                valor: 100.00,
+                descricao: "Pix",
+                conta_destino_id: contas[3].id_conta,
+            },
+        ];
+
+
+        const transacoes = [];
         
         for (let i = 0; i < 10; i++) {
             const contaOrigem = contas[faker.number.int({ min: 0, max: contas.length - 1 })];
             const contaDestino = contas[faker.number.int({ min: 0, max: contas.length - 1 })];
 
-            if (contaOrigem.id === contaDestino.id) {
-                continue;
-            }
-
             const tipo = faker.helpers.arrayElement(['deposito', 'saque', 'transferencia']);
             const valor = faker.number.float({ min: 10, max: 1000, precision: 0.01 });
             const descricao = tipo === 'deposito'
                 ? faker.helpers.arrayElement([
-                    'Depósito via app', 'Transferência recebida', 'Pix recebido', 
-                    'Depósito em dinheiro', 'Depósito via terminal bancário', 
-                    'Depósito realizado por transferência', 'Depósito por cheque compensado', 
-                    'Depósito de valor em caixa eletrônico', 'Depósito realizado via terminal bancário',
-                    'Depósito'
+                    'Depósito via app', 'Transferência recebida', 'Pix recebido'
                 ])
                 : tipo === 'transferencia'
                 ? faker.helpers.arrayElement(['Transferência efetuada', 'Transferência'])
                 : faker.helpers.arrayElement([
-                    'Saque em caixa eletrônico',
-                    'Saque realizado com cartão', 'Saque no caixa eletrônico',
-                    'Saque local', 'Saque'
+                    'Saque em caixa eletrônico', 'Saque realizado com cartão'
                 ]);
 
+            if (contaOrigem.id_conta === contaDestino.id_conta && tipo === 'transferencia') {
+                continue;
+            }
+
             const data = dayjs
-                .tz(faker.date.past(12, new Date()), 'America/Sao_Paulo')
+                .tz(faker.date.past(1), 'America/Sao_Paulo')
                 .toDate();
 
             transacoes.push({
-                conta_id: contaOrigem.id,
-                
+                conta_id: contaOrigem.id_conta,  
                 tipo,
                 valor,
                 descricao,
-                conta_destino_id: tipo === 'transferencia' ? contaDestino.id : null,
+                conta_destino_id: tipo === 'transferencia' ? contaDestino.id_conta : null,
                 createdAt: data,
                 updatedAt: data,
             });
 
+            
             if (tipo === 'deposito') {
                 contaOrigem.saldo = parseFloat(contaOrigem.saldo) + valor;
                 await contaOrigem.save();
@@ -174,16 +201,20 @@ const seedTransacoes = async () => {
             } else if (tipo === 'transferencia') {
                 contaOrigem.saldo = parseFloat(contaOrigem.saldo) - valor;
                 contaDestino.saldo = parseFloat(contaDestino.saldo) + valor;
-                await contaOrigem.save();
-                await contaDestino.save();
+                await Promise.all([contaOrigem.save(), contaDestino.save()]);
             }
         }
 
-        await Transacao.bulkCreate(transacoes);
+        
+        await Transacao.bulkCreate([...transacoesPadrao, ...transacoes]);
         
     } catch (err) {
-         // eslint-disable-next-line
-        console.error('Erro ao popular banco de dados com transações:', err);
+        // eslint-disable-next-line
+        console.error('Erro detalhado:', {
+            message: err.message,
+            stack: err.stack,
+            errors: err.errors || []
+        });
     }
 };
 const seedDatabase = async () => {

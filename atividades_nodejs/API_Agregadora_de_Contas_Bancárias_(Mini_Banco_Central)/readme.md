@@ -1,43 +1,57 @@
-## 💳 API Agregadora de Contas Bancárias (Mini_Banco_Central)
+# 🏦 API Agregadora de Contas Bancárias (Mini Banco Central)
 
-Esta API REST permite o gerenciamento de usuários, instituições financeiras, contas bancárias e transações, utilizando Node.js, Express, Sequelize, PostgreSQL e Docker.
-
+# Introdução
+Esta API REST permite a criação ,visualização e interação de usuários, instituições financeiras, contas bancárias e transações.
 ---
 
 ## 🚀 Tecnologias
 
-- Node
-- Express
-- Sequelize
-- PostgreSQL
-- Docker
+### Tecnologias que exigem instalação.
+
+- [Docker](https://www.docker.com/get-started/): Para criar e gerenciar os containers.
+
+- [Node e npm](https://nodejs.org/pt): Ambiente de execução e gerenciador de pacotes para o projeto.
+
+### Tecnologias inclusas no projeto via docker e npm install:
+
+
+- Express: Framework para Node.js.
+- Sequelize: ORM para interagir com o banco de dados.
+- PostgreSQL: Banco de dados relacional.
+
+
 
 ---
+# Etapas
 
 ## 🛠️ Como executar o projeto
 
+### 1. Abra o diretório da pasta do projeto com sua IDE ou no terminal:
 
-### 2. Instale as dependências
+```bash
+cd ../Compass-UOL\atividades_nodejs\API_Agregadora_de_Contas_Bancárias_(Mini_Banco_Central)>
+```
+
+### 2. Instale as dependências:
 
 ```bash
 npm install
 ```
 
-### 3. Suba os containers com Docker (já está tudo pronto com o script "dev")
+### 3. Inicie o Servidor (e o Docker) utilizando o comando:
 
 ```bash
 npm run dev
 ```
+A API estará disponível em:  
+📍 `http://localhost:3050/`
 
-## BD
+# Banco de Dados
+## Se quiser visualizar pelo navegador (opcional):
 
-### 1. Quando rodar o npm run dev
+Acesse 📍 `http://localhost:5050/`  
 
-O Server pgAdmin estará rodando em:  
-📍 `http://localhost:5050/`
-
----
-## Efetue o login
+Efetue o login com os dados:
 
 📧 Email: admin@admin.com
 
@@ -46,7 +60,7 @@ O Server pgAdmin estará rodando em:
 ---
 
 Adicione uma nova conexão (apenas na primeira vez):
-Name: Mini Banco Central (opcional, nomeia à sua escolha)
+Name: (opcional, Exemplos dahora: mini_banco, bd, postgres )
 
 Host name/address: db
 
@@ -61,20 +75,84 @@ Database: mini_banco_central
 Após a primeira vez, o pgAdmin irá lembrar da conexão!
 
 ---
-#### 2. Caso prefira utilizar o sequelize-cli
+## 2. Caso prefira utilizar o sequelize-cli
 
 ```bash
 npx sequelize db:migrate
 ```
 
-## API
-
-A API estará disponível em:  
-📍 `http://localhost:3050/`
 
 ---
 
-## 📌 Rotas da API
+# 📌 Requisições
+
+## 🧑‍💻 **Passo a Passo para Testar as Requisições da API**
+
+### **Importando as Requisições no Insomnia ou Postman**
+
+- **Insomnia** (*recomendado*): Se você estiver usando o Insomnia, já deixei o ambiente pronto para você testar as rotas. Para isso:
+  1. Abra o Insomnia.
+  2. Importe o arquivo da pasta **Insomnia** para o collections de algum projeto no Insomnia (arquivo com extensão `.har`).
+  3. Após importar, você terá todas as rotas já configuradas, pronto para testar a API.
+  
+- **Postman** (*não recomendado*): Se você preferir usar o Postman :
+  1. Abra o Postman.
+  2. Vá para **Workspace > Import** no canto superior esquerdo.
+  3. Selecione o arquivo com as requisições da pasta **Insomnia**.
+  4. O Postman irá importar as rotas e você poderá testar a API.
+  
+  **OBS**: *Se utlizar o Postman provavelmente terá que fazer ajustes na requisição quando precisar enviar dados no Body ou no Params.*
+
+- **Outras Ferramentas**: Se você estiver utilizando alguma outra ferramenta para testar a API que aceite arquivos `.har`, basta importar o arquivo da mesma maneira.
+
+---
+
+###  **Consultando as Rotas da API**
+
+Se você deseja entender melhor o funcionamento das rotas ou não quer usar os arquivos prontos para importação, você pode consultar as rotas da API manualmente. As principais rotas estão descritas abaixo.
+
+---
+
+## 📂 **Rotas da API**
+
+### 🚀 **Rotas Básicas**
+
+- **[GET /](#get-)** - Rota de teste.
+
+---
+
+### 👤 **Rotas de Usuários**
+
+- **[GET /usuarios](#get-usuarios)** - Lista todos os usuários cadastrados.
+- **[POST /usuarios](#post-usuarios)** - Cria um novo usuário.
+- **[GET /usuarios/:id/saldo](#get-usuariosidsaldo)** - Retorna o saldo total de um usuário.
+- **[GET /usuarios/:id/](#get-usuariosid)** - Retorna os dados de um usuário específico.
+
+---
+
+### 🏦 **Rotas de Instituições**
+
+- **[POST /instituicoes](#post-instituicoes)** - Cadastra uma nova instituição.
+- **[GET /instituicoes](#get-instituicoes)** - Lista todas as instituições.
+- **[GET /instituicoes/:id/](#get-instituicoesid)** - Lista uma instituição pelo ID.
+
+---
+
+### 💳 **Rotas de Contas**
+
+- **[POST /usuarios/contas](#post-usuarioscontas)** - Cria uma nova conta bancária.
+- **[GET /usuarios/contas](#get-usuarioscontas)** - Lista todas as contas do sistema.
+- **[GET /usuarios/:id/contas](#get-usuariosidcontas)** - Lista as contas de um usuário específico.
+
+---
+
+### 💰 **Rotas de Transações**
+
+- **[POST /usuarios/:id/transacoes](#post-usuariosidtransacoes)** - Realiza uma transação (depósito, saque ou transferência).
+- **[GET /usuarios/extrato](#get-usuariosextrato)** - Lista todas as transações.
+- **[GET /usuarios/:id/extrato](#get-usuariosidextrato)** - Retorna o extrato de transações de um usuário.
+
+---
 
 ### 📂 Rota Básica
 
@@ -96,11 +174,13 @@ Lista todos os usuários cadastrados.
 ```json
 [
   {
-    "id": 1,
-    "cpf": "123.456.789-00",
+    "id": num,
+    "cpf": "12345678900",
     "nome": "João Silva",
-    "qtd_contas": 2
+    "qtd_contas": num_contas
   }
+  {...}
+  ...
 ]
 ```
 
@@ -110,7 +190,7 @@ Cria um novo usuário.
 **Corpo da Requisição:**
 ```json
 {
-  "cpf": "123.456.789-00",
+  "cpf": "12345678900",
   "nome": "João Silva"
 }
 ```
@@ -118,8 +198,8 @@ Cria um novo usuário.
 **Resposta:**
 ```json
 {
-  "id": 1,
-  "cpf": "123.456.789-00",
+  "id": num,
+  "cpf": "12345678900",
   "nome": "João Silva"
 }
 ```
@@ -143,10 +223,10 @@ Retorna os dados de um usuário específico.
 **Resposta:**
 ```json
 {
-  "id": 1,
-  "cpf": "123.456.789-00",
+  "id": num,
+  "cpf": "12345678900",
   "nome": "João Silva",
-  "qtd_contas": 2
+  "qtd_contas": num_contas
 }
 ```
 
@@ -160,17 +240,17 @@ Cadastra uma nova instituição.
 **Corpo da Requisição:**
 ```json
 {
-  "nome": "Banco XYZ",
-  "cnpj": "00.000.000/0001-00"
+  "nome": "Banco Compass",
+  "cnpj": "00000000000100"
 }
 ```
 
 **Resposta:**
 ```json
 {
-  "id": 1,
-  "nome": "Banco XYZ",
-  "cnpj": "00.000.000/0001-00"
+  "id": num,
+  "nome": "Banco Compass",
+  "cnpj": "00000000000100"
 }
 ```
 
@@ -178,15 +258,22 @@ Cadastra uma nova instituição.
 Lista todas as instituições.
 
 **Resposta:**
+
+Retorna todas instituições cadastradas.
+
+#### `GET /instituicoes/:id/`  
+Lista a instituição pelo ID.
+
+**Resposta:**
+
 ```json
 [
   {
-    "id": 1,
-    "nome": "Banco XYZ"
+    "id": id_inserido,
+    "nome": "Instituição Financeira"
   }
 ]
 ```
-
 ---
 
 ### 💳 Rotas de Contas
@@ -197,21 +284,26 @@ Cria uma nova conta bancária.
 **Corpo da Requisição:**
 ```json
 {
-  "usuario_id": 1,
-  "instituicao_id": 1
+  "usuario_id": "id",
+  "instituicao_id": "1"
 }
 ```
 
 **Resposta:**
 ```json
 {
-  "message": "Conta de 'João Silva' criada na instituição 'Banco XYZ'",
-  "new_account": {
-    "id_conta": 1,
-    "usuario_id": 1,
-    "instituicao_id": 1,
-    "saldo": 0.0
-  }
+	"message": "Conta de 'Wandreus Muhl Dourado' criada na instituição 'Itaú'",
+	"new_account": {
+		"id_conta": "id_conta",
+		"usuario_id": "usuario_id",
+		"instituicao_id": "instituicao_id",
+		"saldo": "0.00",
+		"nome_usuario": "Wandreus Muhl Dourado",
+		"cpf_usuario": "cpf_usuario",
+		"nome_instituicao": "Itaú",
+		"updatedAt": "timestamp",
+		"createdAt": "timestamp"
+	}
 }
 ```
 
@@ -268,16 +360,33 @@ Realiza uma transação (depósito, saque ou transferência).
 **Resposta:**
 ```json
 {
-	"id": 4, 
-	"conta_id": 2,
+	"createdAt": "timestamp",
+	"updatedAt": "timestamp",
+	"id": id_transferencia,
+	"conta_id": "2",
 	"tipo": "transferencia",
 	"valor": "120.00",
-	"descricao": "Pix",
-	"conta_destino_id": 3
+	"descricao": "Pix pra ajudar no churras dos piá",
+	"conta_destino_id": "3"
 }
 ```
 #### `GET /usuarios/extrato` 
 Lista todas as transações.
+
+**Resposta:**
+
+Retorna uma lista contendo todas transações.
+
+#### `GET /usuarios/:id/extrato`  
+Retorna o extrato de transações do usuário.
+
+**Parâmetro opcional:**
+
+- `instituicao_id` → filtra por instituição
+
+**URL**
+
+#### `GET /usuarios/1/extrato?instituicao_id=1`
 
 **Resposta:**
 ```json
@@ -285,62 +394,29 @@ Lista todas as transações.
 	{
 		"id": 1,
 		"tipo": "transferencia",
-		"valor": "120.00",
-		"descricao": "pra tu comprar um Xis",
-		"data": "2025-04-17T15:06:58.673Z",
-		"de": {
-			"id": 2,
-			"nome": "Wandreus Muhl Dourado",
-			"cpf": "71886133077"
-		},
-		"para": {
-			"id": 3,
-			"nome": "Gabriel Missio da Silva",
-			"cpf": "47962443040"
-		}
-	},
-	{
-		"id": 4,
-		"tipo": "transferencia",
-		"valor": "1000.00",
+		"valor": "100.00",
 		"descricao": "Pix",
-		"data": "2025-04-17T15:08:31.018Z",
+		"data": "timestamp",
 		"de": {
-			"id": 3,
-			"nome": "Gabriel Missio da Silva",
-			"cpf": "47962443040"
-		},
-		"para": {
 			"id": 1,
 			"nome": "Luiz Fantin Neto",
-			"cpf": "00616459857"
+			"cpf": "cpf_remetente"
+		},
+		"para": {
+			"id": 2,
+			"nome": "Wandreus Muhl Dourado",
+			"cpf": "cpf_destinatario"
 		}
 	},
-  {...}
-]
-````
-#### `GET /usuarios/:id/extrato`  
-Retorna o extrato de transações do usuário.
-
-**Parâmetro opcional:**
-- `instituicao_id` → filtra por instituição
-
-**Resposta:**
-```json
-[
- {
-		"id": 5,
-		"tipo": "deposito",
-		"valor": "12000.00",
-		"descricao": "Salário",
-		"data": "2025-04-17T15:12:36.814Z",
-		"de": {
-			"id": 3,
-			"nome": "Gabriel Missio da Silva",
-			"cpf": "47962443040"
-		},
-		"para": null
-	}
 ]
 ```
 ---
+
+## Obrigado por testar meu projeto!
+
+### Finalizando
+
+Se quiser limpar seu ambiente, interrompa o servidor com **CTRL + C** e insira este código no terminal:
+````bash
+docker compose down -v
+````
