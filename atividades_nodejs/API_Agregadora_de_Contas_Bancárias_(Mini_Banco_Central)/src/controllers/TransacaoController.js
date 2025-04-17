@@ -74,48 +74,62 @@ async index(req, res) {
     const { id } = req.params;
     const { instituicao_id } = req.query;
 
-    if (!id || isNaN(id)) {
-      return res.status(400).json({ error: 'ID de usuário inválido.' });
-    }
+    let transacoes;
 
-    
-    const whereConta = { usuario_id: id };
-    if (instituicao_id) {
-      whereConta.instituicao_id = instituicao_id;
-    }
-
-    const contasUsuario = await Conta.findAll({
-      where: whereConta,
-      attributes: ['id_conta']
-    });
-
-    const idsDasContas = contasUsuario.map(conta => conta.id_conta);
-
-    if (idsDasContas.length === 0) {
-      return res.status(404).json({ error: 'Nenhuma conta encontrada para este usuário e instituição.' });
-    }
-
-    
-    const transacoes = await Transacao.findAll({
-      where: {
-        [Op.or]: [
-          { conta_id: idsDasContas },
-          { conta_destino_id: idsDasContas }
+    if (!id || id === '0') {
+      
+      transacoes = await Transacao.findAll({
+        include: [
+          {
+            model: Conta,
+            as: 'conta',
+            attributes: ['id_conta', 'nome_usuario', 'cpf_usuario']
+          },
+          {
+            model: Conta,
+            as: 'conta_destino',
+            attributes: ['id_conta', 'nome_usuario', 'cpf_usuario']
+          }
         ]
-      },
-      include: [
-        {
-          model: Conta,
-          as: 'conta',
-          attributes: ['id_conta', 'nome_usuario', 'cpf_usuario']
+      });
+    } else {
+      const whereConta = { usuario_id: id };
+      if (instituicao_id) {
+        whereConta.instituicao_id = instituicao_id;
+      }
+
+      const contasUsuario = await Conta.findAll({
+        where: whereConta,
+        attributes: ['id_conta']
+      });
+
+      const idsDasContas = contasUsuario.map(conta => conta.id_conta);
+
+      if (idsDasContas.length === 0) {
+        return res.status(404).json({ error: 'Nenhuma conta encontrada para este usuário e instituição.' });
+      }
+
+      transacoes = await Transacao.findAll({
+        where: {
+          [Op.or]: [
+            { conta_id: idsDasContas },
+            { conta_destino_id: idsDasContas }
+          ]
         },
-        {
-          model: Conta,
-          as: 'conta_destino',
-          attributes: ['id_conta', 'nome_usuario', 'cpf_usuario']
-        }
-      ]
-    });
+        include: [
+          {
+            model: Conta,
+            as: 'conta',
+            attributes: ['id_conta', 'nome_usuario', 'cpf_usuario']
+          },
+          {
+            model: Conta,
+            as: 'conta_destino',
+            attributes: ['id_conta', 'nome_usuario', 'cpf_usuario']
+          }
+        ]
+      });
+    }
 
     const resultado = transacoes.map(transacao => ({
       id: transacao.id,
@@ -144,6 +158,7 @@ async index(req, res) {
     });
   }
 }
+
 
 
 }

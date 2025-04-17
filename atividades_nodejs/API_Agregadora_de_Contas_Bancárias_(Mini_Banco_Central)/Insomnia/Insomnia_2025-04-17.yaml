@@ -1,4 +1,4 @@
-type: collection.insomnia.rest/5.0
+*type: collection.insomnia.rest/5.0
 name: Requisições
 meta:
   id: wrk_10adea08422c4f1c876ef257b587c796
@@ -25,8 +25,8 @@ collection:
           mimeType: application/json
           text: |-
             {
-            	"cpf": "08064983073", 
-            	"nome": "Melissa Goncalves Pinto"
+              "cpf": "08064983073", 
+              "nome": "Melissa Goncalves Pinto"
             }
         headers:
           - name: Content-Type
@@ -107,8 +107,8 @@ collection:
           mimeType: application/json
           text: |-
             { 
-            	"nome": "Itauba",
-            	"cnpj": "05412378965478"
+            "nome": "Itauba",
+            "cnpj": "05412378965478"
             }
         headers:
           - name: Content-Type
@@ -167,8 +167,8 @@ collection:
           mimeType: application/json
           text: |-
             { 
-            	"usuario_id": 1,
-            	"instituicao_id": 4
+            "usuario_id": 1,
+            "instituicao_id": 4
             }
         headers:
           - name: Content-Type
@@ -299,11 +299,11 @@ collection:
           mimeType: application/json
           text: |
             {
-            	"conta_id" : "1",
-             	"tipo": "deposito",
-             	"valor": "120",
-             	"descricao" : "Pix",
-             	"conta_destino_id" : "1"
+            "conta_id" : "1",
+            "tipo": "deposito",
+            "valor": "120",
+            "descricao" : "Pix",
+            "conta_destino_id" : "1"
             }
         parameters:
           - id: pair_5775e2266203451ebd5587158059a468
