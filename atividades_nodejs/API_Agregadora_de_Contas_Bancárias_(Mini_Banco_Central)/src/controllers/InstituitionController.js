@@ -26,11 +26,28 @@ class InstitutionController {
 
   async index(req, res) {
     try {
-      const instituicoes = await Institution.findAll({
-        attributes: ['id', 'nome']
-      });
+      const { id } = req.params; 
   
-      return res.status(200).json(instituicoes);
+      if (id) {
+        
+        const instituicao = await Institution.findOne({
+          where: { id },
+          attributes: ['id', 'nome']
+        });
+  
+        if (!instituicao) {
+          return res.status(404).json({ error: 'Instituição não encontrada.' });
+        }
+  
+        return res.status(200).json(instituicao);
+      } else {
+        
+        const instituicoes = await Institution.findAll({
+          attributes: ['id', 'nome']
+        });
+  
+        return res.status(200).json(instituicoes); 
+      }
     } catch (error) {
       return res.status(500).json({
         error: 'Erro ao listar instituições',

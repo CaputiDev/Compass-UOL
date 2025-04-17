@@ -17,6 +17,7 @@ routes.get('/usuarios/:id/saldo', UserController.obterSaldo);
 
 routes.post('/instituicoes',InstitutionController.create);
 routes.get('/instituicoes',InstitutionController.index);
+routes.get('/instituicoes/:id/',InstitutionController.index)
 
 routes.get('/usuarios/extrato',TransacaoController.index);
 routes.get('/usuarios/:id/extrato',TransacaoController.index);
