@@ -1,10 +1,5 @@
 import sequelize from '../database/db.js';
-
-import Usuario from '../models/User.js';
-import Institution from '../models/Institution.js';
-import Conta from '../models/Conta.js';
-import Transacao from '../models/Transacao.js';
-
+import {User as Usuario, Conta, Transacao, Instituicao as Institution} from '../models/associations.js'
 import { faker } from '@faker-js/faker';
 
 import dayjs from 'dayjs';
@@ -119,73 +114,73 @@ const seedContas = async () => {
 };
 const seedTransacoes = async () => {
     try {
-    const contas = await Conta.findAll();
-
-    const transacoes = [];
-
-    for (let i = 0; i < 10; i++) {
-        const conta = contas[faker.number.int({ min: 0, max: contas.length - 1 })];
-
-        const tipo = faker.helpers.arrayElement(['deposito', 'saque']);
-        const valor = faker.number.float({ min: 10, max: 1000, precision: 0.01 });
-        const descricao = tipo === 'deposito'
-        ? faker.helpers.arrayElement([
-            'Depósito via app',
-            'Transferência recebida',
-            'Pix recebido',
-            'Depósito em dinheiro',
-            'Depósito via terminal bancário',
-            'Depósito realizado por transferência',
-            'Depósito por cheque compensado',
-            'Depósito de valor em caixa eletrônico',
-        ])
-        : faker.helpers.arrayElement([
-            'Saque em caixa eletrônico',
-            'Transferência enviada',
-            'Pix enviado',
-            'Pagamento de boleto',
-            'Saque em caixa eletrônico realizado',
-            'Saque em terminal de autoatendimento',
-            'Retirada de saldo em caixa eletrônico',
-            'Saque no caixa eletrônico disponível',
-            'Saque feito no terminal de autoatendimento',
-            'Retirada de dinheiro em caixa eletrônico',
-            'Saque em caixa eletrônico com cartão',
-            'Saque realizado com código QR',
-            'Saque via terminal bancário',
-            'Retirada em caixa eletrônico 24h',
-        ]);
+        const contas = await Conta.findAll();
+        const transacoes = [];
         
-        const data = dayjs
-.tz(
-    faker.date.between({ 
-    from: dayjs().subtract(12, 'months').toDate(), 
-    to: new Date() 
-    }), 
-    'America/Sao_Paulo'
-)
-.toDate(); 
-
-transacoes.push({
-conta_id: conta.id_conta,
-tipo,
-valor,
-descricao,
-createdAt: data,
-updatedAt: data,
-});
-        
-        if (tipo === 'deposito') {
-            conta.saldo = parseFloat(conta.saldo) + valor;
-        } else if (tipo === 'saque') {
-            conta.saldo = parseFloat(conta.saldo) - valor;
+        if (contas.length === 0) {
+             // eslint-disable-next-line
+            console.warn('Nenhuma conta encontrada. Transações não serão criadas.');
+            return;
         }
-            await conta.save();
-    }
+        
+        for (let i = 0; i < 10; i++) {
+            const contaOrigem = contas[faker.number.int({ min: 0, max: contas.length - 1 })];
+            const contaDestino = contas[faker.number.int({ min: 0, max: contas.length - 1 })];
+
+            if (contaOrigem.id === contaDestino.id) {
+                continue;
+            }
+
+            const tipo = faker.helpers.arrayElement(['deposito', 'saque', 'transferencia']);
+            const valor = faker.number.float({ min: 10, max: 1000, precision: 0.01 });
+            const descricao = tipo === 'deposito'
+                ? faker.helpers.arrayElement([
+                    'Depósito via app', 'Transferência recebida', 'Pix recebido', 
+                    'Depósito em dinheiro', 'Depósito via terminal bancário', 
+                    'Depósito realizado por transferência', 'Depósito por cheque compensado', 
+                    'Depósito de valor em caixa eletrônico', 'Depósito realizado via terminal bancário',
+                    'Depósito'
+                ])
+                : tipo === 'transferencia'
+                ? faker.helpers.arrayElement(['Transferência efetuada', 'Transferência'])
+                : faker.helpers.arrayElement([
+                    'Saque em caixa eletrônico',
+                    'Saque realizado com cartão', 'Saque no caixa eletrônico',
+                    'Saque local', 'Saque'
+                ]);
+
+            const data = dayjs
+                .tz(faker.date.past(12, new Date()), 'America/Sao_Paulo')
+                .toDate();
+
+            transacoes.push({
+                conta_id: contaOrigem.id,
+                conta_destino_id: tipo === 'transferencia' ? contaDestino.id : null,
+                tipo,
+                valor,
+                descricao,
+                createdAt: data,
+                updatedAt: data,
+            });
+
+            if (tipo === 'deposito') {
+                contaOrigem.saldo = parseFloat(contaOrigem.saldo) + valor;
+                await contaOrigem.save();
+            } else if (tipo === 'saque') {
+                contaOrigem.saldo = parseFloat(contaOrigem.saldo) - valor;
+                await contaOrigem.save();
+            } else if (tipo === 'transferencia') {
+                contaOrigem.saldo = parseFloat(contaOrigem.saldo) - valor;
+                contaDestino.saldo = parseFloat(contaDestino.saldo) + valor;
+                await contaOrigem.save();
+                await contaDestino.save();
+            }
+        }
 
         await Transacao.bulkCreate(transacoes);
+        
     } catch (err) {
-        // eslint-disable-next-line
+         // eslint-disable-next-line
         console.error('Erro ao popular banco de dados com transações:', err);
     }
 };

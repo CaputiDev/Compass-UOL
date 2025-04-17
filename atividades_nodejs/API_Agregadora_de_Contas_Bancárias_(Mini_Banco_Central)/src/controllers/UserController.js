@@ -1,5 +1,5 @@
 import { fn, col } from 'sequelize';
-import { User, Conta } from '../models/associations.js';
+import { User, Conta, Instituicao} from '../models/associations.js';
 
 class UserController {
     async create(req, res) {
@@ -34,7 +34,7 @@ class UserController {
                             [fn('COUNT', col('contas.id_conta')), 'qtd_contas']
                         ]
                     },
-                    group: ['usuarios.id'],  // Ajustado para 'usuarios.id'
+                    group: ['usuarios.id'], 
                 });
     
                 if (!usuario) {
@@ -58,7 +58,7 @@ class UserController {
                         [fn('COUNT', col('contas.id_conta')), 'qtd_contas']
                     ]
                 },
-                group: ['usuarios.id'],  // Ajustado para 'usuarios.id'
+                group: ['usuarios.id'], 
             });
     
             return res.json(usuarios);
@@ -70,39 +70,56 @@ class UserController {
         }
     }
 
-    async obterSaldoTotal(req, res) {
-        const { id } = req.params;
+    async obterSaldo(req, res) {
+  const { id } = req.params;
+  const { instituicao } = req.query;
 
-        if (isNaN(id)) {
-            return res.status(400).json({ error: 'ID inválido' });
-        }
+  if (isNaN(id)) {
+    return res.status(400).json({ error: 'ID inválido' });
+  }
 
-        try {
-            const usuario = await User.findByPk(id);
-            if (!usuario) {
-                return res.status(404).json({ error: 'Usuário não encontrado' });
-            }
-
-            const contas = await Conta.findAll({
-                where: { usuario_id: id },
-                attributes: ['saldo'],  
-            });
-
-            if (contas.length === 0) {
-                return res.status(404).json({ error: 'Usuário não possui contas' });
-            }
-
-            const saldoTotal = contas.reduce((acc, conta) => acc + parseFloat(conta.saldo), 0);
-
-            return res.json({ saldo_total: saldoTotal.toFixed(2) });
-
-        } catch (error) {
-            return res.status(500).json({
-                error: 'Erro ao calcular o saldo',
-                details: error.message
-            });
-        }
+  try {
+    const usuario = await User.findByPk(id);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado' });
     }
+
+    const whereConta = { usuario_id: id };
+    const include = [];
+
+    if (instituicao) {
+      include.push({
+        model: Instituicao,
+        as: 'instituicao',
+        where: { id: instituicao },
+        attributes: [] 
+      });
+    }
+
+    const contas = await Conta.findAll({
+      where: whereConta,
+      attributes: ['saldo'],
+      include
+    });
+
+    if (contas.length === 0) {
+      return res.status(404).json({
+        error: 'Usuário não possui contas ou não há contas nessa instituição'
+      });
+    }
+
+    const saldoTotal = contas.reduce((acc, conta) => acc + parseFloat(conta.saldo), 0);
+
+    return res.json({ saldo_total: saldoTotal.toFixed(2) });
+  } catch (error) {
+    return res.status(500).json({
+      error: 'Erro ao calcular o saldo',
+      details: error.message
+    });
+  }
+}
+
+    
 }
 
 export default new UserController();

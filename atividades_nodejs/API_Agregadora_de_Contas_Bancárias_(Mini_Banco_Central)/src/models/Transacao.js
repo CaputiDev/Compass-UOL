@@ -1,14 +1,6 @@
 import { DataTypes } from 'sequelize';
 import database from '../database/db.js';
 
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc.js';
-import timezone from 'dayjs/plugin/timezone.js';
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('America/Sao_Paulo');
-
 const Transacao = database.define('transacoes', {
   id: {
     type: DataTypes.INTEGER,
@@ -20,7 +12,7 @@ const Transacao = database.define('transacoes', {
     allowNull: false,
   },
   tipo: {
-    type: DataTypes.ENUM('deposito', 'saque'),
+    type: DataTypes.ENUM('deposito', 'saque','transferencia'),
     allowNull: false,
   },
   valor: {
@@ -31,18 +23,24 @@ const Transacao = database.define('transacoes', {
     type: DataTypes.STRING,
     allowNull: true,
   },
+  conta_destino_id: {
+    type: DataTypes.INTEGER,
+    allowNull: true 
+  },
   createdAt: {
     type: DataTypes.DATE,
-    defaultValue: () => dayjs().tz().toDate(),
+    defaultValue: DataTypes.NOW,
   },
   updatedAt: {
     type: DataTypes.DATE,
-    defaultValue: () => dayjs().tz().toDate(),
+    defaultValue: DataTypes.NOW
   }
+  
 }, {
   tableName: 'transacoes',
   timestamps: true,
 });
+
 
 
 

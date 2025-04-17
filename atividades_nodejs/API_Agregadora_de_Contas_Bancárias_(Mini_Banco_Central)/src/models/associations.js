@@ -18,9 +18,25 @@ Conta.belongsTo(Instituicao, {
     as: 'instituicao',
 });
 
+Conta.hasMany(Transacao, {
+    foreignKey: 'conta_id',
+    as: 'transacoes'
+});
+
+
 Transacao.belongsTo(Conta,{
     foreignKey:'conta_id',
     as:'conta',
-})
+});
+
+Transacao.belongsTo(Conta, {
+    foreignKey: 'conta_destino_id',
+    as: 'conta_destino',
+});
+
+Instituicao.hasMany(Conta, {
+    foreignKey: 'instituicao_id',
+    as: 'contas', 
+});
 
 export { User, Conta, Instituicao, Transacao };

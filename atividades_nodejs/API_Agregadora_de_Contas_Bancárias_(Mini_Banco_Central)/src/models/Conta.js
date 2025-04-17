@@ -1,15 +1,6 @@
 import { DataTypes } from 'sequelize';
 import database from '../database/db.js';
 
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc.js';
-import timezone from 'dayjs/plugin/timezone.js';
-
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.tz.setDefault('America/Sao_Paulo');
-
 const Conta = database.define('contas', {
   id_conta: {
     type: DataTypes.INTEGER,
