@@ -11,7 +11,6 @@ routes.get('/', (req,res)=>{
 
 routes.get('/usuarios', UserController.index);
 
-
 routes.post('/usuarios', UserController.create);
 
 routes.get('/usuarios/:id/saldo', UserController.obterSaldo);
@@ -29,6 +28,5 @@ routes.get('/usuarios/contas',ContaController.index);
 routes.get('/usuarios/:id/contas',ContaController.listarPorUsuario)
 
 routes.get('/usuarios/:id/', UserController.index);
-
 
 export default routes;
