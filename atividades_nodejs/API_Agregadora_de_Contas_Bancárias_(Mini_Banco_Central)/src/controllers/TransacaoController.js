@@ -74,8 +74,42 @@ async index(req, res) {
     const { id } = req.params;
     const { instituicao_id } = req.query;
 
-    if (!id || isNaN(id)) {
-      return res.status(400).json({ error: 'ID de usuário inválido.' });
+    
+    if (!id || id === '0') {
+      const transacoes = await Transacao.findAll({
+        include: [
+          {
+            model: Conta,
+            as: 'conta',
+            attributes: ['id_conta', 'nome_usuario', 'cpf_usuario']
+          },
+          {
+            model: Conta,
+            as: 'conta_destino',
+            attributes: ['id_conta', 'nome_usuario', 'cpf_usuario']
+          }
+        ]
+      });
+
+      const resultado = transacoes.map(transacao => ({
+        id: transacao.id,
+        tipo: transacao.tipo,
+        valor: transacao.valor,
+        descricao: transacao.descricao,
+        data: transacao.createdAt,
+        de: transacao.conta ? {
+          id: transacao.conta.id_conta,
+          nome: transacao.conta.nome_usuario,
+          cpf: transacao.conta.cpf_usuario
+        } : null,
+        para: transacao.conta_destino ? {
+          id: transacao.conta_destino.id_conta,
+          nome: transacao.conta_destino.nome_usuario,
+          cpf: transacao.conta_destino.cpf_usuario
+        } : null
+      }));
+
+      return res.json(resultado);
     }
 
     
@@ -95,7 +129,6 @@ async index(req, res) {
       return res.status(404).json({ error: 'Nenhuma conta encontrada para este usuário e instituição.' });
     }
 
-    
     const transacoes = await Transacao.findAll({
       where: {
         [Op.or]: [
@@ -144,8 +177,5 @@ async index(req, res) {
     });
   }
 }
-
-
 }
-
 export default new TransacaoController();

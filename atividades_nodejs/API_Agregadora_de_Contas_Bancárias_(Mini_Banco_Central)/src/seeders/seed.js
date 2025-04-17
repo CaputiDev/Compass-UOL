@@ -115,6 +115,7 @@ const seedContas = async () => {
 const seedTransacoes = async () => {
     try {
         const contas = await Conta.findAll();
+        
         const transacoes = [];
         
         if (contas.length === 0) {
@@ -155,10 +156,11 @@ const seedTransacoes = async () => {
 
             transacoes.push({
                 conta_id: contaOrigem.id,
-                conta_destino_id: tipo === 'transferencia' ? contaDestino.id : null,
+                
                 tipo,
                 valor,
                 descricao,
+                conta_destino_id: tipo === 'transferencia' ? contaDestino.id : null,
                 createdAt: data,
                 updatedAt: data,
             });
