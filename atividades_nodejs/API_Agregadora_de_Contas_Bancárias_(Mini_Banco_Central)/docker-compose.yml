@@ -21,7 +21,7 @@ services:
     image: postgres:15
     container_name: postgres_db
     ports:
-      - "5432:5432"
+      - "5445:5432"
     environment:
       POSTGRES_DB: mini_banco_central
       POSTGRES_USER: postgres
