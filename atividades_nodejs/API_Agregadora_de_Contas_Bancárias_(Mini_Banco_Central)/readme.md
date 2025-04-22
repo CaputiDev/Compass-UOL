@@ -16,13 +16,26 @@ Esta API REST permite a criação ,visualização e interação de usuários, in
 
 
 - Express: Framework para Node.js.
-- Sequelize: ORM para interagir com o banco de dados.
+- Sequelize ORM: para interagir com o banco de dados.
 - PostgreSQL: Banco de dados relacional.
 
-
-
 ---
+
 # Etapas
+
+## ⬇️ Baixe os arquivos
+
+Apenas esse projeto:
+
+Clique **AQUI**[https://encurtador.com.br/AXVhl] para baixar apenas este projeto do repostitório
+
+Extraia os arquivos
+
+OU use o git clone:
+```bash
+cd [...]
+git clone https://github.com/CaputiDev/Compass-UOL.git
+```
 
 ## 🛠️ Como executar o projeto
 
