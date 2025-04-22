@@ -339,7 +339,7 @@ Realiza uma transação (depósito, saque ou transferência).
 {
 	"createdAt": "timestamp",
 	"updatedAt": "timestamp",
-	"id": id_transferencia,
+	"id": "id_transferencia",
 	"conta_id": "2",
 	"tipo": "transferencia",
 	"valor": "120.00",
@@ -375,13 +375,13 @@ Retorna o extrato de transações do usuário.
 		"descricao": "Pix",
 		"data": "timestamp",
 		"de": {
-			"id": 1,
-			"nome": "Luiz Fantin Neto",
+			"id": "1",
+			"nome": "usuario",
 			"cpf": "cpf_remetente"
 		},
 		"para": {
 			"id": 2,
-			"nome": "Wandreus Muhl Dourado",
+			"nome": "destinario",
 			"cpf": "cpf_destinatario"
 		}
 	},
