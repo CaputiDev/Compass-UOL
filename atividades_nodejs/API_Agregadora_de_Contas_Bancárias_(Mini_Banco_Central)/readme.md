@@ -38,7 +38,7 @@ cd ../Compass-UOL\atividades_nodejs\API_Agregadora_de_Contas_Bancárias_(Mini_Ba
 npm install
 ```
 
-### 3. Inicie o Servidor (e o Docker) utilizando o comando:
+### 3. Inicie o Docker em sua máquina e utilize o comando:
 
 ```bash
 npm run dev
@@ -47,6 +47,8 @@ A API estará disponível em:
 📍 `http://localhost:3050/`
 
 # Banco de Dados
+Quando iniciar a API, o Banco de dados já estará funcionando.
+
 ## Se quiser visualizar pelo navegador (opcional):
 
 Acesse 📍 `http://localhost:5050/`  
@@ -75,7 +77,7 @@ Database: mini_banco_central
 Após a primeira vez, o pgAdmin irá lembrar da conexão!
 
 ---
-## 2. Caso prefira utilizar o sequelize-cli
+## 2. Caso prefira utilizar o sequelize-cli (opcional)
 
 ```bash
 npx sequelize db:migrate
@@ -174,13 +176,13 @@ Lista todos os usuários cadastrados.
 ```json
 [
   {
-    "id": num,
-    "cpf": "12345678900",
-    "nome": "João Silva",
-    "qtd_contas": num_contas
+    "id": "num",
+    "cpf": "cpf",
+    "nome": "nome",
+    "qtd_contas": "num_contas"
   }
-  {...}
-  ...
+  {"..."}
+  "..."
 ]
 ```
 
@@ -198,7 +200,7 @@ Cria um novo usuário.
 **Resposta:**
 ```json
 {
-  "id": num,
+  "id": "num",
   "cpf": "12345678900",
   "nome": "João Silva"
 }
@@ -213,7 +215,7 @@ Retorna o saldo total do usuário.
 **Resposta:**
 ```json
 {
-  "saldo_total": "1500.00"
+  "saldo_total": "$$$.$$"
 }
 ```
 
@@ -223,10 +225,10 @@ Retorna os dados de um usuário específico.
 **Resposta:**
 ```json
 {
-  "id": num,
-  "cpf": "12345678900",
-  "nome": "João Silva",
-  "qtd_contas": num_contas
+  "id": 'num",
+  "cpf": "cpf",
+  "nome": "Usuario",
+  "qtd_contas": "num_contas"
 }
 ```
 
@@ -248,7 +250,7 @@ Cadastra uma nova instituição.
 **Resposta:**
 ```json
 {
-  "id": num,
+  "id": "num",
   "nome": "Banco Compass",
   "cnpj": "00000000000100"
 }
@@ -269,7 +271,7 @@ Lista a instituição pelo ID.
 ```json
 [
   {
-    "id": id_inserido,
+    "id": "id_inserido",
     "nome": "Instituição Financeira"
   }
 ]
@@ -285,22 +287,22 @@ Cria uma nova conta bancária.
 ```json
 {
   "usuario_id": "id",
-  "instituicao_id": "1"
+  "instituicao_id": "id"
 }
 ```
 
 **Resposta:**
 ```json
 {
-	"message": "Conta de 'Wandreus Muhl Dourado' criada na instituição 'Itaú'",
+	"message": "Conta de 'Usuario' criada na instituição 'instituicao'",
 	"new_account": {
 		"id_conta": "id_conta",
 		"usuario_id": "usuario_id",
 		"instituicao_id": "instituicao_id",
-		"saldo": "0.00",
-		"nome_usuario": "Wandreus Muhl Dourado",
+		"saldo": "$$$.$$",
+		"nome_usuario": "Usuario",
 		"cpf_usuario": "cpf_usuario",
-		"nome_instituicao": "Itaú",
+		"nome_instituicao": "instituicao",
 		"updatedAt": "timestamp",
 		"createdAt": "timestamp"
 	}
@@ -314,10 +316,10 @@ Lista todas as contas do sistema.
 ```json
 [
   {
-    "id_conta": 1,
-    "usuario_id": 1,
-    "instituicao_id": 1,
-    "saldo": 1000.00
+    "id_conta": "num",
+    "usuario_id": "num",
+    "instituicao_id": "num",
+    "saldo": "$$$.$$"
   }
 ]
 ```
@@ -329,10 +331,10 @@ Lista as contas de um usuário.
 ```json
 [
   {
-    "id_conta": 1,
-    "usuario_id": 1,
-    "instituicao_id": 1,
-    "saldo": 1000.00
+    "id_conta": "num",
+    "usuario_id": "num",
+    "instituicao_id": "num",
+    "saldo": "1000.00"
   }
 ]
 ```
