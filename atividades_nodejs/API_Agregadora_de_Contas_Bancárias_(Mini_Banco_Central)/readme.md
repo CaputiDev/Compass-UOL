@@ -34,7 +34,7 @@ Extraia os arquivos
 OU use o git clone:
 ```bash
 cd [...]
-git clone https://github.com/CaputiDev/Compass-UOL.git
+git clone https://github.com/CaputiDev/Compass-UOL
 ```
 
 ## 🛠️ Como executar o projeto
