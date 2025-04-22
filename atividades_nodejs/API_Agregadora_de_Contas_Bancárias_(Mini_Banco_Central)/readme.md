@@ -32,9 +32,10 @@ Clique [**AQUI**](https://encurtador.com.br/AXVhl) para baixar apenas este proje
 Extraia os arquivos
 
 OU use o git clone:
+
 ```bash
 cd [...]
-git clone https://github.com/CaputiDev/Compass-UOL
+git clone https://github.com/CaputiDev/Compass-UOL.git
 ```
 
 ## 🛠️ Como executar o projeto
@@ -56,6 +57,7 @@ npm install
 ```bash
 npm run dev
 ```
+
 A API estará disponível em:  
 📍 `http://localhost:3050/`
 
@@ -69,7 +71,7 @@ Para mais detalhes sobre o banco de dados, clique [**AQUI**](#Banco-de-Dados)
 
 - **Insomnia** (*recomendado*): Se você estiver usando o Insomnia, já deixei o ambiente pronto para você testar as rotas. Para isso:
   1. Abra o Insomnia.
-  2. Importe o arquivo da pasta **Insomnia** para o collections de algum projeto no Insomnia (arquivo com extensão `.har`).
+  2. Importe o arquivo da pasta **Insomnia** para o collections de algum projeto no Insomnia (arquivo com extensão `.yml`).
   3. Após importar, você terá todas as rotas já configuradas, pronto para testar a API.
   
 - **Postman** (*não recomendado*): Se você preferir usar o Postman :
@@ -84,7 +86,7 @@ Para mais detalhes sobre o banco de dados, clique [**AQUI**](#Banco-de-Dados)
 
 ---
 
-###  **Consultando as Rotas da API**
+### **Consultando as Rotas da API**
 
 Se você deseja entender melhor o funcionamento das rotas ou não quer usar os arquivos prontos para importação, você pode consultar as rotas da API manualmente. As principais rotas estão descritas abaixo.
 
