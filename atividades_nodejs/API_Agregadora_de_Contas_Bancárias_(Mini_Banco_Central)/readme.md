@@ -59,45 +59,7 @@ npm run dev
 A API estará disponível em:  
 📍 `http://localhost:3050/`
 
-# Banco de Dados
-Quando iniciar a API, o Banco de dados já estará funcionando.
-
-## Se quiser visualizar pelo navegador (opcional):
-
-Acesse 📍 `http://localhost:5050/`  
-
-Efetue o login com os dados:
-
-📧 Email: admin@admin.com
-
-🔑 Senha: admin
-
----
-
-Adicione uma nova conexão (apenas na primeira vez):
-Name: (opcional, Exemplos dahora: mini_banco, bd, postgres )
-
-Host name/address: db
-
-Port: 5432
-
-Username: postgres
-
-Password: postgres
-
-Database: mini_banco_central
-
-Após a primeira vez, o pgAdmin irá lembrar da conexão!
-
----
-## 2. Caso prefira utilizar o sequelize-cli (opcional)
-
-```bash
-npx sequelize db:migrate
-```
-
-
----
+Para mais detalhes sobre o banco de dados, clique [**AQUI**](#Banco-de-Dados)
 
 # 📌 Requisições
 
@@ -425,6 +387,46 @@ Retorna o extrato de transações do usuário.
 	},
 ]
 ```
+---
+
+# Banco de Dados
+Quando iniciar a API, o Banco de dados já estará funcionando.
+
+## Se quiser visualizar pelo navegador (opcional):
+
+Acesse 📍 `http://localhost:5050/`  
+
+Efetue o login com os dados:
+
+📧 Email: admin@admin.com
+
+🔑 Senha: admin
+
+---
+
+Adicione uma nova conexão (apenas na primeira vez):
+Name: (opcional, Exemplos dahora: mini_banco, bd, postgres )
+
+Host name/address: db
+
+Port: 5432
+
+Username: postgres
+
+Password: postgres
+
+Database: mini_banco_central
+
+Após a primeira vez, o pgAdmin irá lembrar da conexão!
+
+---
+## 2. Caso prefira utilizar o sequelize-cli (opcional)
+
+```bash
+npx sequelize db:migrate
+```
+
+
 ---
 
 ## Obrigado por testar meu projeto!
