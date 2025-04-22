@@ -31,7 +31,7 @@ Clique [**AQUI**](https://encurtador.com.br/AXVhl) para baixar apenas este proje
 
 Extraia os arquivos
 
-OU use o git clone:
+OU use o git clone para baixar todo o repositório:
 
 ```bash
 cd [...]
