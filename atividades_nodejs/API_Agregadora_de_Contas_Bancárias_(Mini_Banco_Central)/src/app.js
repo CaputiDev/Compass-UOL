@@ -1,8 +1,6 @@
 import express from 'express';
 import routes from './routes.js';
 
-// import path from 'path';
-
 class App {
     constructor() {
     this.server = express();

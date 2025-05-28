@@ -4,4 +4,4 @@
 
 A lei geral de proteção de dados surgiu para proteger o consumidor
 
-{em construção} ;)
+{em construção}

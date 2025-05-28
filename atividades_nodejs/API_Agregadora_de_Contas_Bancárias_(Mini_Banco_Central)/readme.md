@@ -12,12 +12,6 @@ Esta API REST permite a criação ,visualização e interação de usuários, in
 
 - [Node e npm](https://nodejs.org/pt): Ambiente de execução e gerenciador de pacotes para o projeto.
 
-### Tecnologias inclusas no projeto via docker e npm install:
-
-
-- Express: Framework para Node.js.
-- Sequelize ORM: para interagir com o banco de dados.
-- PostgreSQL: Banco de dados relacional.
 
 ---
 
@@ -60,8 +54,6 @@ npm run dev
 
 A API estará disponível em:  
 📍 `http://localhost:3050/`
-
-Para mais detalhes sobre o banco de dados, clique [**AQUI**](#Banco-de-Dados)
 
 # 📌 Requisições
 
@@ -391,51 +383,14 @@ Retorna o extrato de transações do usuário.
 ```
 ---
 
-# Banco de Dados
-Quando iniciar a API, o Banco de dados já estará funcionando.
 
-## Se quiser visualizar pelo navegador (opcional):
-
-Acesse 📍 `http://localhost:5050/`  
-
-Efetue o login com os dados:
-
-📧 Email: admin@admin.com
-
-🔑 Senha: admin
-
----
-
-Adicione uma nova conexão (apenas na primeira vez):
-Name: (opcional, Exemplos dahora: mini_banco, bd, postgres )
-
-Host name/address: db
-
-Port: 5432
-
-Username: postgres
-
-Password: postgres
-
-Database: mini_banco_central
-
-Após a primeira vez, o pgAdmin irá lembrar da conexão!
-
----
-## 2. Caso prefira utilizar o sequelize-cli (opcional)
-
-```bash
-npx sequelize db:migrate
-```
-
-
----
-
-## Obrigado por testar meu projeto!
 
 ### Finalizando
 
-Se quiser limpar seu ambiente, interrompa o servidor com **CTRL + C** e insira este código no terminal:
+Se quiser limpar seu ambiente Docker, interrompa o servidor com **CTRL + C** e insira este código no terminal:
 ````bash
 docker compose down -v
 ````
+---
+
+# Obrigado por testar meu projeto!  
